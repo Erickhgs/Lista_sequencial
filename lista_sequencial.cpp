@@ -1,30 +1,32 @@
 #include <iostream>
-#include <vector>
+
 
 using namespace std;
 
 class lista_sequencial{
     private:
-    vector <int> lista;
+    static const int capacidade = 4;
+    int lista[capacidade];
+    int tamanho;
 
     public:
-    lista_sequencial() {}
+    lista_sequencial() : tamanho(0) {}
 
     bool vazia(){
-        return lista.empty();
+        return tamanho == 0;
     }
 
     bool cheia(){
-
+        return tamanho == capacidade;
     }
 
-    int tamanho(){
-        return lista.size();
+    int tamanho_lista(){
+        return tamanho;
     }
 
     int elemento(int posicao){
         int dado;
-        if( (posicao > lista.size()) || posicao <= 0){
+        if( (posicao > tamanho) || posicao <= 0){
             cout << "Posição inválida"<< endl;
             return -1;
         }
@@ -33,7 +35,7 @@ class lista_sequencial{
     }
 
     void modificar(int posicao, int valor){
-         if( (posicao > lista.size()) || posicao <= 0){
+         if( (posicao > tamanho) || posicao <= 0){
             cout << "Posição inválida"<< endl;
             return;
         }
@@ -41,26 +43,41 @@ class lista_sequencial{
     }
 
     void inserir(int posicao, int valor){
-        if( (posicao > lista.size() + 1 ) || posicao <= 0){
+        if( (posicao > tamanho + 1 ) || posicao <= 0){
             cout << "Posição inválida"<< endl;
             return;
         }
-        lista.insert(lista.begin() + posicao -1, valor);
+        if (cheia()) {
+            cout << "Lista cheia! Não é possível inserir mais elementos." << endl;
+            return;
+        }
+
+        for(int i = tamanho; i >= posicao; i--){
+            lista[i] = lista[i-1];
+        }
+
+        lista[posicao - 1] = valor;
+        tamanho++;
+        
     }
 
     void retirar(int posicao){
-        if( (posicao > lista.size() + 1 ) || posicao <= 0){
+        if( (posicao > tamanho + 1 ) || posicao <= 0){
             cout << "Posição inválida"<< endl;
             return;
         }
-        lista.erase(lista.begin() + posicao -1);
+        for(int i = posicao-1; i < tamanho; i++){
+            lista[i] = lista[i+1];
+        }
+        tamanho--;
     }
 
     void imprimir(){
-        for (int i : lista) {
-            cout << i << " ";
+        for (int i = 0; i < tamanho; ++i) {
+            cout << lista[i] << " ";
         }
         cout << endl;
+
     }
 };
 
@@ -70,16 +87,27 @@ int main(){
     lista.inserir(1, 2);
     lista.inserir(2, 4);
     lista.inserir(3, 6);
-    lista.inserir(4, 8);
     lista.imprimir();
 
     lista.modificar(3, 60);
     lista.imprimir();
 
-    lista.retirar(2);
+    lista.retirar(1);
     lista.imprimir();
 
-    cout << "Tamanho da lista: " << lista.tamanho() << endl;
+    lista.inserir(1, 5);
+    lista.imprimir();
+
+    lista.inserir(1,10);
+    lista.imprimir();
+
+    lista.inserir(1,20);
+    lista.imprimir();
+
+    lista.inserir(6,20);
+    lista.imprimir();
+
+    cout << "Tamanho da lista: " << lista.tamanho_lista() << endl;
     cout << "Elemento na posicao 2: " << lista.elemento(2) << endl;
 
     return 0;
