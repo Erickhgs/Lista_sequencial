@@ -1,50 +1,55 @@
 #include <iostream>
 
-
 using namespace std;
 
-class lista_sequencial{
-    private:
-    static const int capacidade = 4;
-    int lista[capacidade];
-    int tamanho;
+// Classe que implementa uma lista sequencial estática
+class lista_sequencial {
+private:
+    static const int capacidade = 4; 
+    int lista[capacidade]; 
+    int tamanho; 
 
-    public:
+public:
+    // Construtor que inicializa o tamanho da lista como 0
     lista_sequencial() : tamanho(0) {}
 
-    bool vazia(){
+    // Verifica se a lista está vazia
+    bool vazia() {
         return tamanho == 0;
     }
 
-    bool cheia(){
+    // Verifica se a lista está cheia
+    bool cheia() {
         return tamanho == capacidade;
     }
 
-    int tamanho_lista(){
+    // Retorna o tamanho atual da lista
+    int tamanho_lista() {
         return tamanho;
     }
 
-    int elemento(int posicao){
-        int dado;
-        if( (posicao > tamanho) || posicao <= 0){
-            cout << "Posição inválida"<< endl;
+    // Retorna o elemento em uma posição específica
+    int elemento(int posicao) {
+        if (posicao > tamanho || posicao <= 0) {
+            cout << "Posição inválida" << endl;
             return -1;
         }
-        dado = lista[posicao-1];
-        return dado;
+        return lista[posicao - 1];
     }
 
-    void modificar(int posicao, int valor){
-         if( (posicao > tamanho) || posicao <= 0){
-            cout << "Posição inválida"<< endl;
+    // Modifica o valor de um elemento em uma posição específica
+    void modificar(int posicao, int valor) {
+        if (posicao > tamanho || posicao <= 0) {
+            cout << "Posição inválida" << endl;
             return;
         }
-        lista[posicao-1] = valor;
+        lista[posicao - 1] = valor;
     }
 
-    void inserir(int posicao, int valor){
-        if( (posicao > tamanho + 1 ) || posicao <= 0){
-            cout << "Posição inválida"<< endl;
+    // Insere um elemento em uma posição específica
+    void inserir(int posicao, int valor) {
+        if (posicao > tamanho + 1 || posicao <= 0) {
+            cout << "Posição inválida" << endl;
             return;
         }
         if (cheia()) {
@@ -52,59 +57,70 @@ class lista_sequencial{
             return;
         }
 
-        for(int i = tamanho; i >= posicao; i--){
-            lista[i] = lista[i-1];
+        // Desloca os elementos para a direita para abrir espaço
+        for (int i = tamanho; i >= posicao; i--) {
+            lista[i] = lista[i - 1];
         }
 
         lista[posicao - 1] = valor;
         tamanho++;
-        
     }
 
-    void retirar(int posicao){
-        if( (posicao > tamanho + 1 ) || posicao <= 0){
-            cout << "Posição inválida"<< endl;
+    // Remove um elemento de uma posição específica
+    void retirar(int posicao) {
+        if (posicao > tamanho + 1 || posicao <= 0) {
+            cout << "Posição inválida" << endl;
             return;
         }
-        for(int i = posicao-1; i < tamanho; i++){
-            lista[i] = lista[i+1];
+        // Desloca os elementos para a esquerda para preencher o espaço
+        for (int i = posicao - 1; i < tamanho; i++) {
+            lista[i] = lista[i + 1];
         }
         tamanho--;
     }
 
-    void imprimir(){
+    // Imprime todos os elementos da lista
+    void imprimir() {
         for (int i = 0; i < tamanho; ++i) {
             cout << lista[i] << " ";
         }
         cout << endl;
-
     }
 };
 
-int main(){
+int main() {
     lista_sequencial lista;
 
+    // Testes básicos da lista:
+    // Inserçao dos elementos
     lista.inserir(1, 2);
     lista.inserir(2, 4);
     lista.inserir(3, 6);
     lista.imprimir();
 
+
+    // Modifico o elemento da posição 3
     lista.modificar(3, 60);
     lista.imprimir();
 
+    // Retiro o elemento da posição 1
     lista.retirar(1);
     lista.imprimir();
 
+    // Insiro um novo elemento na posição 1
     lista.inserir(1, 5);
     lista.imprimir();
 
-    lista.inserir(1,10);
+    // Insiro novamente um elemento na posição 1
+    lista.inserir(1, 10);
     lista.imprimir();
 
-    lista.inserir(1,20);
+    // Tento inserir novamente um elemento na posição 1
+    lista.inserir(1, 20);
     lista.imprimir();
 
-    lista.inserir(6,20);
+    // Tento inserir um elemento em uma posiçao fora da lista
+    lista.inserir(6, 20);
     lista.imprimir();
 
     cout << "Tamanho da lista: " << lista.tamanho_lista() << endl;
